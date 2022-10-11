@@ -1,4 +1,9 @@
-# Statistical_Inference-Labs
-A repository with examples intended to show how to use R to illustrate statistical concepts or to study properties of statistical procedures using simulation.
+# Advancec Statistical Inference
 
-The examples have been developed to suport the course "Advanced Statistical Inference" at the UPC-UB joint MSc on Statistics and Operations Research but can be con sidered general purpose exercises.
+This repository contains materials used in the course "Advanced Statistical Inference" at the UPC-UB joint MSc on Statistics and Operations Research. 
+
+The examples are not on how to analyze data but, instead, on 
+  - how to use R to illustrate statistical concepts
+  - how to use R to perform statistical procedures that may require computing such as bootstrapping, permutation tests or the EM algorithm.
+  
+ This has to be considered "work in progress" so feel free to let me know about any mistakes or improvements.
