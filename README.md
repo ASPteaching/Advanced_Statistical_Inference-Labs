@@ -1,4 +1,4 @@
-# Advancec Statistical Inference
+# Advanced Statistical Inference
 
 This repository contains materials used in the course "Advanced Statistical Inference" at the UPC-UB joint MSc on Statistics and Operations Research. 
 
