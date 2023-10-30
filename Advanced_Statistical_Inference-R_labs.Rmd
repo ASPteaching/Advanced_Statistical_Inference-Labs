@@ -763,7 +763,9 @@ power.t.test(n=NULL,
 Imagine now (Exercise 1.2.4) you are required to find the sample size
 needed to have a 95% chance of rejecting $H_0:\, \mu = 0$ vs
 $H_1: \mu >0$ at $\alpha = 0.01$ if the true change is 1.5 sec. decrease
-in time. Assuming the standard deviation is 3, and has been estimated:
+in time. 
+
+Assuming the standard deviation is 3, and has been estimated, Chiara and Hesterberg (Mathematical Statistics wirth Resampling and R) provide the following ex`planation:
 
 ```{r}
 power.t.test(n=NULL,
@@ -785,6 +787,7 @@ knitr::include_graphics("images/sampleSize1b.png")
 knitr::include_graphics("images/sampleSize1c.png")
 ```
 
+
 # Introducing permutation tests
 
 One of the most common problems with statistical inference is not being
@@ -798,38 +801,36 @@ or permutations tests.
 The logic of a permutations test, which we introduce in a simplified way
 for the case of a two-group comparison problem, is as follows:
 
-```{=tex}
-\begin {enumerate}
-\item Suppose we have obtained two samples of $ n_1 $ observations from a first group and $ n_2 $ observations of a second group respectively.
-\item To estimate the p-value of a hypotesis test:
+- Suppose we have obtained two samples of $ n_1 $ observations from a first group and $ n_2 $ observations of a second group respectively.
+- To estimate the p-value of a hypotesis test:
   $H_o:\, \mu_1 = \mu_2$ versus $H_1:\, \mu_1 \neq \mu_2$ we must know the
   probability distribution of the test statistic, which can be
   the same as that of the two-sample t-test, under the null hypothesis.
-\item Now, we need to realize that, if the null hypothesis were true, the labels we have assigned to individuals as belonging to group 1 and group 2 _have no reason to be_ since all would belong to the same group and would have been left by chance in the sample that we have considered of the first group or that we have considered of the second.
-\item One way to evaluate to what extent this has been so is the following
-\begin {enumerate}
-\item Let's consider all possible permutations of the two samples
-\item On each permutation, the separation between group 1 and group 2 will be performed (for example, the first $ n_1 $ elements of the permuted sample are assigned to group 1 and the remainder to group 2).
-\item After reallocation, the value of the test statistic is calculated.
-\end {enumerate}
+- Now, we need to realize that, if the null hypothesis were true, the labels we have assigned to individuals as belonging to group 1 and group 2 _have no reason to be_ since all would belong to the same group and would have been left by chance in the sample that we have considered of the first group or that we have considered of the second.
+-  One way to evaluate to what extent this has been so is the following:
+
+  1. Consider all possible permutations of the two samples
+  2. On each permutation, the separation between group 1 and group 2 will be performed (for example, the first $n_1$ elements of the permuted sample are assigned to group 1 and the remainder to group 2).
+  3. After reallocation, the value of the test statistic is calculated.
+
 The values of the test statistics calculated on all permutations constitute an approximation to the \emph {the distribution of the test statistic under the null hypotesis (that is: _there are not two groups but one_)}
 so the p-value of the test can be calculated as:
 
-\begin {eqnarray *}
-p & = & P_ {H_0} \left [T \left (\mathbf {X_1}, \mathbf {X_2} \right) \geq T \left (\mathbf {x_1 ^ 0}, \mathbf {x_2 ^ 0} \right) \right] \\
-& = & \frac {\# T \left (\mathbf {X_1}, \mathbf {X_2} \right) \geq T
+$$
+\begin {align*}
+p & =  P_ {H_0} \left [T \left (\mathbf {X_1}, \mathbf {X_2} \right) \geq T \left (\mathbf {x_1 ^ 0}, \mathbf {x_2 ^ 0} \right) \right] \\
+& \simeq \frac {\# T \left (\mathbf {X_1}, \mathbf {X_2} \right) \geq T
 \left (\mathbf {x_1 ^ 0}, \mathbf {x_2 ^ 0} \right)} {\mbox {Number of
 permutations}}
-\end {eqnarray *}
+\end {align*}
+$$
+_In practice, the number of permutations is usually very large, so the above process is carried out in an approximate way, taking a smaller number of random permutations_.
 
-In practice, the number of permutations is usually very large, so the above process is carried out in an approximate way, taking a smaller number of random permutations.
-\end {enumerate}
-```
 The figure below illustrates the procedure used in a permutations test
 to compare two samples.
 
 ```{r, echo=FALSE, out.width="100%"}
-knitr::include_graphics("images/permutationtests.jpg")
+knitr::include_graphics("images/permutationtests.png")
 ```
 
 ## Example
@@ -911,6 +912,14 @@ par(mfrow=c(1,1))
 hist(testValues)
 abline(v = testInSample, col = "blue", lwd = 2)
 ```
+
+A rough estimation of the permutation p-value, based on the formula above is
+
+```{r}
+sum(testValues >= testInSample)/length(testValues)
+```
+
+That is, in this example **we would not reject $H_0$ based on the results of the permutation test performed**.
 
 ### Relying on pre-built packages
 
