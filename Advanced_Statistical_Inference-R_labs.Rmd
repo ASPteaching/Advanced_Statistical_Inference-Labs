@@ -317,6 +317,23 @@ for (i in 1:3){
 Strictly speaking we are not illustrating the CLT here. What should we
 do for a better illustration?
 
+## On the difference between Convergence in Probability and Almost sure convergence
+
+This is a simple analogy, found in Quora, that captures some aspects of the difference:
+
+-Suppose we have a committee with 100 members.
+- Imagine there is one meeting of the committee everyday throughout the year, and that we want to know about attendance on the committee.
+  - Alost sure convergence is a bit like asking whether almost all members had perfect attendance.
+  - Convergence in probability is a bit like asking whether all meetings were almost full.
+
+- If almost all members have perfect attendance, then each meeting must be almost full (convergence almost surely implies convergence in probability)
+
+- But if all meetings were nearly full, it isn't necessary that any member has perfect attendance (eg, each member might have been absent on one distinct day). Convergence in probability does not imply convergence almost surely.
+
+Convergence almost surely means that $X_n(w)$ gets close to $X(w)$ as $n$ increases for almost all elements w of the sample space. It's a statement about convergence of $X_n(w)$ for many individual $w$.
+
+Convergence in probability means that the set of elements $w$ of the sample space for which $X_n(w)$ is close to $X(w)$ has probability approaching 1. It's a statement about the size of the set of w which satisfy the closeness property, but not about any one w.
+
 # The empirical distribution function
 
 ## Building the empirical distribution function

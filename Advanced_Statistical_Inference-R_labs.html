@@ -1890,6 +1890,32 @@ for (i in 1:3){
 we do for a better illustration?</p>
 </div>
 </div>
+<div id="on-the-difference-between-convergence-in-probability-and-almost-sure-convergence" class="section level2" number="2.3">
+<h2><span class="header-section-number">2.3</span> On the difference
+between Convergence in Probability and Almost sure convergence</h2>
+<p>This is a simple analogy, found in Quora, that captures some aspects
+of the difference:</p>
+<p>-Suppose we have a committee with 100 members. - Imagine there is one
+meeting of the committee everyday throughout the year, and that we want
+to know about attendance on the committee. - Alost sure convergence is a
+bit like asking whether almost all members had perfect attendance. -
+Convergence in probability is a bit like asking whether all meetings
+were almost full.</p>
+<ul>
+<li><p>If almost all members have perfect attendance, then each meeting
+must be almost full (convergence almost surely implies convergence in
+probability)</p></li>
+<li><p>But if all meetings were nearly full, it isn’t necessary that any
+member has perfect attendance (eg, each member might have been absent on
+one distinct day). Convergence in probability does not imply convergence
+almost surely.</p></li>
+</ul>
+<p>Convergence almost surely means that <span class="math inline">\(X_n(w)\)</span> gets close to <span class="math inline">\(X(w)\)</span> as <span class="math inline">\(n\)</span> increases for almost all elements w of
+the sample space. It’s a statement about convergence of <span class="math inline">\(X_n(w)\)</span> for many individual <span class="math inline">\(w\)</span>.</p>
+<p>Convergence in probability means that the set of elements <span class="math inline">\(w\)</span> of the sample space for which <span class="math inline">\(X_n(w)\)</span> is close to <span class="math inline">\(X(w)\)</span> has probability approaching 1. It’s
+a statement about the size of the set of w which satisfy the closeness
+property, but not about any one w.</p>
+</div>
 </div>
 <div id="the-empirical-distribution-function" class="section level1" number="3">
 <h1><span class="header-section-number">3</span> The empirical
@@ -2529,7 +2555,6 @@ distribution.</p>
 <p>The data generation and models specifications are provide here
 below</p>
 <pre class="r"><code>library(dplyr)</code></pre>
-<pre><code>## Warning: package &#39;dplyr&#39; was built under R version 4.3.1</code></pre>
 <pre><code>## 
 ## Attaching package: &#39;dplyr&#39;</code></pre>
 <pre><code>## The following objects are masked from &#39;package:stats&#39;:
