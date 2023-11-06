@@ -359,7 +359,7 @@ Convergence in probability means that the set of elements $w$ of the sample spac
     -   While $x_i< max(\mathbb{x_0})+1$ do
         -   $x_i+1 = x_i+\Delta$
         -   if $x_{i+1} \in \mathbb{x_0^{sorted}}$ then
-            $y_{i+1}=y_i+\Delta$
+            $y_{i+1}=y_i+\frac{1}{n}$
 
 -   The values of $y$ form an approximation to the empirical cdf of
     $\mathbb{x_0}$
@@ -370,18 +370,22 @@ function given a sample.
 R has a function implemented that computes the ecdf.º
 
 ```{r}
-x0<-c(0.4,0.1,-0.6, 1.8,0.5,-2.0, 0.7, -0.5, -1.1, -0.2, -1.0, -0.7)
+x0<-c(0.4,-0.6, 1.8,0.5,-2.0, 0.7, -0.5, -1.1, -0.2,  -0.7)
 Fn <- ecdf(x0)
-Fn(x0)
-summary(Fn)
+round(Fn(sort(x0)), 2)
 knots(Fn)
-sort(unique(Fn(x0)))
+Fn(knots(Fn))
 ```
 
 ## Ploting the empirical cdf with R
 
 Functions `ecdf` and `plot.ecdf` facilitate the visualization of the
 empirical cdf.
+
+```{r}
+plot(Fn)
+```
+
 
 ```{r}
 op <- par(mfrow=c(3,1), mgp=c(1.5, 0.8,0), mar= .1+c(3,3,2,1))
