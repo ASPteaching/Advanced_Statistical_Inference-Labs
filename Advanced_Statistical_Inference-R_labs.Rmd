@@ -1104,19 +1104,19 @@ that implements it, although there are alternatives.
 Assume by example the gamma distribution $f(x;\alpha,\beta)$ with shape
 and scale parameters $a$ (or $\alpha$) and $s$ (or $\beta$)
 respectively: $$
-   f(x;\alpha,\beta)= 1/(\beta^\alpha \Gamma(\alpha)) x^(\alpha-1) e^-(x/\beta).
+   f(x;\alpha,\beta)= 1/(\beta^\alpha \Gamma(\alpha)) x^{(\alpha-1)} e^{-(x/\beta)}.
 $$
 
 If we restrict to the distribution with scale parameter $\beta=1$ we
 have: $$
-   f(x;\alpha)= 1/\Gamma(\alpha) x^(\alpha-1) e^-x.
+   f(x;\alpha)= 1/\Gamma(\alpha) x^{(\alpha-1)} e^{-x}.
 $$
 
 From above, the likelihood function can be derived as: $$
    L(\alpha|(x_1,...,x_n))= -n\cdot \ln (\Gamma(\alpha)) +(\alpha-1) \sum_{i=1}^n \ln x_i - \sum_{i=1}^n x_i.
 $$
 
-We cab write a function implementing this likelihoos or use the one
+We can write a function implementing this likelihoos or use the one
 available in R.
 
 ```{r loglik1}
@@ -1198,12 +1198,12 @@ for(i in 1:length(alpha))
   for(j in 1:length(lambda))
   loglik[i,j] = n*alpha[i]*log(lambda[j])+(alpha[i]-1)*sumlogx-
               lambda[j]*sumx-n*log(gamma(alpha[i]))
-opt<-par(mfrow=c(2,2))
+
 image(alpha,lambda,exp(loglik),col=gray((0:32)/32))
-image(alpha,lambda,loglik,col=gray((0:32)/32))
 persp(alpha,lambda,exp(loglik),theta=330,phi=45,shade=1,zlab="lik")
+
+image(alpha,lambda,loglik,col=gray((0:32)/32))
 persp(alpha,lambda,loglik,theta=330,phi=45,shade=1,zlab="l")
-par(opt)
 ```
 
 ## Muon-decay-Example
