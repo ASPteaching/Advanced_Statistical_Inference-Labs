@@ -1462,7 +1462,7 @@ plot(log.L,type="b",lty=1)
 A typical example appears when we have (or we believe to have) mixtures of distributions whose parameters we wish to estimate. It is very common in such cases that the *mixing coefficient* is unknown.
 
 The function `EM_TwoMixtureNormal` implements the algorithm described in
-Unit 3B (slides 78-80) to run Expectation Maximization on a mixture of two normal distributions.
+Unit 3C (slides 38-42) to run Expectation Maximization on a mixture of two normal distributions.
 
 ```{r}
 ### two component EM
