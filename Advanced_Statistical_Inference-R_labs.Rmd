@@ -1255,6 +1255,85 @@ df <- data.frame(iteration=1:length(results[[1]])-1,
 show(df)
 ```
 
+### Modularizing the code
+
+An improved version of the previous procedire can make it easier to apply to other functions.
+
+```{r}
+# lo-likelihood
+log_likelihood <- function(alpha, x) {
+  n <- length(x)
+  sum(log(1 + alpha * x)) - n * log(2)
+}
+
+# First derivative (gradient)
+log_likelihood_prime <- function(alpha, x) {
+  sum(x / (1 + alpha * x))
+}
+
+# Second derivative (hessian)
+log_likelihood_double_prime <- function(alpha, x) {
+  sum((x / (1 + alpha * x))^2)
+}
+
+# Running Newton-Raphson
+
+newton_raphson <- function(x, log_lik_fn, grad_fn, hess_fn, alpha0 = 0.6, eps = 1e-6) {
+  n <- length(x)
+  diff <- 1
+  alpha <- alpha0
+  iter <- 0
+  
+  # Inicializamos resultados
+  alpha_history <- numeric()
+  log_likelihood_history <- numeric()
+  alpha_history[1] <- alpha
+  log_likelihood_history[1] <- log_lik_fn(alpha, x)
+  
+  while (diff > eps) {
+    iter <- iter + 1
+    grad <- grad_fn(alpha, x)
+    hess <- hess_fn(alpha, x)
+    
+    # Actualizar alpha
+    alpha_new <- alpha + grad / hess
+    diff <- abs(alpha_new - alpha)
+    alpha <- alpha_new
+    
+    # Guardar resultados
+    alpha_history <- c(alpha_history, alpha)
+    log_likelihood_history <- c(log_likelihood_history, log_lik_fn(alpha, x))
+  }
+  
+  # Crear data frame con los resultados
+  results <- data.frame(
+    iteration = 0:(length(alpha_history) - 1),
+    alpha = alpha_history,
+    log_likelihood = log_likelihood_history
+  )
+  
+  list(results = results, converged = diff <= eps)
+}
+
+```
+
+This function can be called in the same way for any likelihood provided we have created the required functions:
+
+```{r}
+result <- newton_raphson(
+  x = xMuon,
+  log_lik_fn = log_likelihood,
+  grad_fn = log_likelihood_prime,
+  hess_fn = log_likelihood_double_prime,
+  alpha0 = 0.6
+)
+
+print(result$converged)
+print(result$results)
+```
+
+
+
 ## The multiparametric case. Rainfall data
 
 We create two functions one to compute the log-likelihood and the NR
