@@ -1208,6 +1208,127 @@ image(alpha,lambda,loglik,col=gray((0:32)/32))
 persp(alpha,lambda,loglik,theta=330,phi=45,shade=1,zlab="l")
 ```
 
+## Quadratic approximation for a likelihood
+
+```{r}
+plot_gamma_likelihood <- function(xmin = 2, xmax = 3,
+                                  alpha0 = 2.3,
+                                  n = 50,
+                                  alpha_true = 5, lambda_true = 2,
+                                  posLegend="topleft") {
+  
+  # ============================
+  # 1. Mostra Gamma
+  # ============================
+  set.seed(123)
+  x <- rgamma(n, shape = alpha_true, rate = lambda_true)
+  
+  sumlogx <- sum(log(x))
+  sumx    <- sum(x)
+  
+  # ============================
+  # 2. Log-versemblança vectoritzada
+  # ============================
+  loglik <- function(alpha) {
+    out <- rep(NA, length(alpha))
+    ok <- alpha > 0
+    out[ok] <- n*alpha[ok]*log(lambda_true) +
+      (alpha[ok] - 1)*sumlogx -
+      lambda_true*sumx -
+      n*lgamma(alpha[ok])
+    out
+  }
+  
+  # ============================
+  # 3. Derivades numèriques
+  # ============================
+  loglik1 <- function(a) {
+    h <- 1e-5
+    (loglik(a + h) - loglik(a - h)) / (2*h)
+  }
+  
+  loglik2 <- function(a) {
+    h <- 1e-5
+    (loglik(a + h) - 2*loglik(a) + loglik(a - h)) / h^2
+  }
+  
+  # ============================
+  # 4. Aproximació quadràtica
+  # ============================
+  loglik_taylor <- function(alpha) {
+    loglik(alpha0) +
+      loglik1(alpha0) * (alpha - alpha0) +
+      0.5 * loglik2(alpha0) * (alpha - alpha0)^2
+  }
+  
+  # ============================
+  # 5. Rang de representació
+  # ============================
+  alpha_seq <- seq(xmin, xmax, length.out = 400)
+  
+  # ============================
+  # 6. Gràfic principal (sense eixos)
+  # ============================
+  plot(alpha_seq, loglik(alpha_seq), type="l", lwd=2,
+       xlab="alpha", ylab="log-likelihood",
+       xaxt="n", yaxt="n",
+       main = paste0("Gamma likelihood & quadratic approx (", xmin, ", ", xmax, ")"))
+  
+  lines(alpha_seq, loglik_taylor(alpha_seq),
+        col="blue", lwd=2, lty=2)
+  
+  legend(posLegend,
+         legend=c("Log-lik", "Quadratic"),
+         col=c("black","blue"), lwd=2, lty=c(1,2))
+  
+  # Return useful objects for later additions
+  list(
+    loglik = loglik,
+    loglik_taylor = loglik_taylor
+  )
+}
+
+```
+
+```{r}
+res <- plot_gamma_likelihood(xmin=2.4, xmax=2.7, 
+                             alpha_true = 3.05, lambda_true = 2.0,
+                             posLegend="topleft")
+
+loglik <- res$loglik
+loglik_taylor <- res$loglik_taylor
+
+xmin=2.4; xmax=2.7
+axis(side = 1,
+     at = seq(xmin, xmax, by = 0.1),
+     labels = seq(xmin, xmax, by = 0.1))
+
+# -------------------------
+# Dibuixar línies verticals
+# -------------------------
+
+# 1) θ^0
+x0 <- 2.45
+segments(x0, par("usr")[3], x0, loglik_taylor(x0),
+         col="black", lwd=2, lty=3)
+text(x0, par("usr")[3], expression(theta^0), pos=1, xpd=TRUE)
+
+# 2) θ_opt
+xopt <- 2.54
+segments(xopt, par("usr")[3], xopt, loglik(xopt),
+         col="red", lwd=2)
+text(xopt, par("usr")[3], expression(theta[opt]), pos=1, xpd=TRUE)
+
+# 3) θ_1
+x1 <- 2.525
+segments(x1, par("usr")[3], x1, loglik_taylor(x1),
+         col="blue", lwd=2, lty=2)
+text(x1, par("usr")[3], expression(theta[1]), pos=1, xpd=TRUE)
+
+```
+
+
+
 ## Muon-decay-Example
 
 ### The Newton-Raphson algorithm
